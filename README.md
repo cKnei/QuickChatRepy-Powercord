@@ -18,3 +18,5 @@ I am not sure if this is allowed in any way because I have 0 clue how to contact
 - Ven#8810(i use Samm-Cheese btw) <343383572805058560>
 
 for helping me with issues I had :D
+
+Also Please Help Me I wasted my life on this..
