@@ -48,15 +48,13 @@ class quickChatReply extends Plugin {
 	}
 
 	_createReply() {
-		const index = this.message.index
 		const channel = this.fetch.channel(this.message.channel)
-		const message = this.fetch.message(this.message.channel).toArray().reverse()[index]
-		const button = (channel.guild_id !== null)
+		const message = this.fetch.message(this.message.channel).toArray().reverse()[this.message.index]
 		this.reply.create({
 			message: message,
 			channel: channel,
 			shouldMention: this.settings.get('mention', true),
-			showMentionToggle: button
+			showMentionToggle: (channel.guild_id !== null)
 		})
 	}
 
