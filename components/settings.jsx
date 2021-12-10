@@ -37,7 +37,7 @@ module.exports = class Settings extends React.PureComponent {
             note='Changes the key for replying to the next message'
             style={validation.Next ? {} : { borderColor: "#e53935" }}
             >
-            Reply to Next Key
+            Reply to Next Key Id
           </TextInput>
           <SwitchItem 
             value={this.props.getSetting('replyNext', defaultSetting.Next).ctrlKey}
@@ -81,7 +81,7 @@ module.exports = class Settings extends React.PureComponent {
             note='Changes the key for replying to the next message'
             style={validation.Prev? {} : { borderColor: "#e53935" }}
             >
-            Reply to Next Key
+            Reply to Next Key Id
           </TextInput>
           <SwitchItem 
             value={this.props.getSetting('replyPrev', defaultSetting.Prev).ctrlKey}
