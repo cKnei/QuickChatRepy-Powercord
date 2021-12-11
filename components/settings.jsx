@@ -1,6 +1,5 @@
-const { React, getModuleByDisplayName } = require('powercord/webpack'); // We have to import React
-const { TextInput, SwitchItem, Category } = require('powercord/components/settings'); // Here we Import the TextInput Component for later use
-const FormText = getModuleByDisplayName( "Formtext", false )
+const { React } = require('powercord/webpack');
+const { TextInput, SwitchItem, Category } = require('powercord/components/settings');
 
 const defaultSetting ={ 
   Next: {ctrlKey: true, shiftKey: false, altKey: false, metaKey: false, code: "ArrowUp"}, 
@@ -19,10 +18,10 @@ module.exports = class Settings extends React.PureComponent {
     return(
       <div>
 
-        <FormText>
+        <div style={{color: 'white'}}>
           <b>Note: </b>
           If you are having any issues with key inputs not working please check <a onClick = { ( ) => { require('electron').shell.openExternal('https://github.com/notKnei/quickChatReply/wiki/keyBindsHelp') } }>here</a>.
-        </FormText>
+        </div>
         <br/><br/>
 
         <Category
