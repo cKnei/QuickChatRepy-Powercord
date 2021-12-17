@@ -34,8 +34,10 @@ class quickChatReply extends Plugin {
 
 	_keyPressHandler(keyInput) {
 		if (this.filter(this.settings.get('replyNext'), keyInput)) {
-			this.message.index += 1
-			this.createReply()
+			if (this.message.index + 1 < this.fetch.message(this.message.channel).toArray().length) {
+				this.message.index += 1
+				this.createReply()
+			}
 		} else if (this.filter(this.settings.get('replyPrev'), keyInput)) {
 			this.message.index -= 1
 			if (this.message.index < 0) {
