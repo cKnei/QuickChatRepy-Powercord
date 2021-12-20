@@ -8,7 +8,7 @@ Default key-binds are:
 
 ## Recent Update
 Click [Here](https://github.com/notKnei/quickChatReply/blob/master/TODO.md#update-110) To Read The Changes
-
+## Suggestions & Issues
 Have a [Suggestion Or Issue](https://github.com/notKnei/quickChatReply/blob/master/TODO.md#suggestions--issue-reports)?
 
 QUICK NOTICE: This is literally just me taking the [quick-reply plugin](https://github.com/relative/quick-reply) and fixing it.
