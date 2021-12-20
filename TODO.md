@@ -1,10 +1,11 @@
+Jump To (Suggestions & Issues)[https://github.com/notKnei/quickChatReply/blob/master/TODO.md#suggestions--issue-reports]
 
 ## Things that I know of and is making fixes for:
 
 - None Currently
 
 ## Past Issues that were fixed:
-
+### Update 1.1.0
 -  [X] If a user sends a message while moving between messages, next 'Message' is the same as the one you just indexed to( Especially painful on large servers )
 
 ## Suggestions & Issue Reports
@@ -29,3 +30,4 @@ If you have found a bug please also open an [Issue Ticket](https://github.com/no
     - [] Has this already been reported?
     - [] Does this have anything to do with other Plugins/Themes?
     
+

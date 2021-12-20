@@ -6,6 +6,11 @@ Default key-binds are:
   Reply to higher up message: <kbd>Ctrl</kbd>+<kbd>ArrowUp</kbd>
   Reply to lower down message: <kbd>Ctrl</kbd>+<kbd>ArrowDown</kbd>
 
+## Recent Update
+Click (Here)[https://github.com/notKnei/quickChatReply/blob/master/TODO.md#update-110] To Read The Changes
+
+Have a (Suggestion Or Issue)[https://github.com/notKnei/quickChatReply/blob/master/TODO.md#suggestions--issue-reports]?
+
 QUICK NOTICE: This is literally just me taking the [quick-reply plugin](https://github.com/relative/quick-reply) and fixing it.
 I am not sure if this is allowed in any way because I have 0 clue how to contact the original guy
 ## Quick Install
