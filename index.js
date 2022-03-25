@@ -19,37 +19,36 @@ const {
 } = require('powercord/webpack');
 
 const Settings = require('./components/settings');
-let listenerStatus=false;
+let listenerStatus = false;
 
 class quickChatReply extends Plugin {
 	constructor() {
 		super()
 
-		this.keyPressHandler = this._keyPressHandler.bind(this)
-		this.createReply = this._createReply.bind(this)
-		this.overhaulCurrentChannel = this._overhaulCurrentChannel.bind(this)
-		this.overhaulCurrentReply = this._overhaulCurrentReply.bind(this)
-		this.messageUpdater = this._messageUpdater.bind(this)
-		this.noification_Popup = this.settings.get('Notification-Popup', true)
+		this.keyPressHandler = this._keyPressHandler.bind(this);
+		this.createReply = this._createReply.bind(this);
+		this.overhaulCurrentChannel = this._overhaulCurrentChannel.bind(this);
+		this.overhaulCurrentReply = this._overhaulCurrentReply.bind(this);
+		this.messageUpdater = this._messageUpdater.bind(this);
+		this.noification_Popup = this.settings.get('Notification-Popup', true);
 	}
 
 	filter(matchfrom, matchto) {
-		return Object.keys(matchfrom).every((value,) => { return matchfrom[value] === matchto[value] })
+		return Object.keys(matchfrom).every((value,) => { return matchfrom[value] === matchto[value] });
 	}
 
 	_keyPressHandler(keyInput) {
 		if ( !this.message.channel ) {
-			const c = getChannelId()
-			this.message.channel = c
-			this.cache.channel = this.fetch.channel( c )
-			//this.cache.messages = this.fetch.message( c ).toArray().reverse()
+			const c = getChannelId();
+			this.message.channel = c;
+			this.cache.channel = this.fetch.channel( c );
 		}
 		if ( this.filter(this.settings.get('replyNext'), keyInput) ) {
 			const l = this.fetch.message( this.message.channel ).toArray().length;
 			if ( this.message.index+1 < l ) {
-				this.message.index++
-				this.createReply()
-				this.newMessageListen(true)
+				this.message.index++;
+				this.createReply();
+				this.newMessageListen(true);
 			}
 			else if ( this.noification_Popup&&!powercord.api.notices.toasts['quickChatReply-Max!Reply?Limit']&&this.message.index+1===l ) {
 				powercord.api.notices.sendToast( 
@@ -60,24 +59,24 @@ class quickChatReply extends Plugin {
 						content: `You have reached the current loaded message limit of: ${l}.\nTo reply to furthur up messages please scroll up.`,
 						buttons: [{text:'Disable Forever',look:'filled',size:'small',onClick:()=>{this.settings.set('Notification-Popup', false); this.noification_Popup= !this.noification_Popup; powercord.api.notices.closeToast('quickChatReply-Max!Reply?Limit');}},{text:'Dismiss',look:'filled',size:'small',onClick:()=>{powercord.api.notices.closeToast('quickChatReply-Max!Reply?Limit');}},],
 					}
-				)
+				);
 			}
 		} 
 		else if ( this.filter(this.settings.get('replyPrev'), keyInput) ) {
-			this.message.index--
+			this.message.index--;
 			if (this.message.index < 0) {
 				this.message.index=-1;
-				this.removeReply()
+				this.removeReply();
 			} 
 			else {
-				this.createReply()
+				this.createReply();
 			}
 		}
 	}
 
 	_createReply() {
 		this.reply.create({
-			message: this.fetch.message(this.message.channel).toArray().reverse()[this.message.index], // Maybe also switch to caching?
+			message: this.fetch.message(this.message.channel).toArray().reverse()[this.message.index],
 			channel: this.cache.channel,
 			shouldMention: this.settings.get('mention', true),
 			showMentionToggle: ((this.cache.channel.guild_id !== null) || false)
@@ -85,26 +84,26 @@ class quickChatReply extends Plugin {
 	}
 
 	removeReply() {
-		this.reply.remove(this.message.channel)
+		this.reply.remove(this.message.channel);
 	}
 
 	_overhaulCurrentChannel(dat) {
 		if (this.message.channel !== dat.channelId) {
-			this.removeReply()
-			this.newMessageListen(false)
-			this.message = { index: -1, channel: dat.channelId }
-			this.cache.channel = this.fetch.channel(this.message.channel)
+			this.removeReply();
+			this.newMessageListen(false);
+			this.message = { index: -1, channel: dat.channelId };
+			this.cache.channel = this.fetch.channel(this.message.channel);
 		}
 	}
 
 	_overhaulCurrentReply(dat) {
-		if ( dat.type === createReply ) {
-			this.message.index = this.fetch.message(this.message.channel).toArray().reverse().findIndex((e,i,a)=>{return e.id===dat.message.id})
-			this.newMessageListen(true)
+		if (dat.type === createReply) {
+			this.message.index = this.fetch.message(this.message.channel).toArray().reverse().findIndex((e,)=>{return e.id===dat.message.id});
+			this.newMessageListen(true);
 		}
 		else if (dat.type === removeReply) {
 			this.newMessageListen(false);
-			this.message = { index: -1, channel: this.message.channel, }
+			this.message = { index: -1, channel: this.message.channel, };
 		}
 	}
 
@@ -121,40 +120,49 @@ class quickChatReply extends Plugin {
 	}
 
 	startPlugin() {
-		const { createPendingReply, deletePendingReply } = getModule(['createPendingReply'], false)
-		const { getChannel } = getModule(['getChannel', 'hasChannel'], false)
-		const { getMessages } = getModule(['initialize', 'getRawMessages'], false)
+		const { createPendingReply, deletePendingReply } = getModule(['createPendingReply',], false);
+		const { getChannel } = getModule(['getChannel', 'hasChannel',], false);
+		const { getMessages } = getModule(['initialize', 'getRawMessages',], false);
 
-		this.cache = { channel: undefined, }// messages: undefined, } gave up on this for now
-		this.message = { index: -1, channel: undefined, }
-		this.fetch = { message: getMessages, channel: getChannel, }
-		this.reply = { create: createPendingReply, remove: deletePendingReply, }
-		
-		this.settings.set('replyNext', this.settings.get('replyNext', { ctrlKey: true, shiftKey: false, altKey: false, metaKey: false, code: 'ArrowUp' }))
-		this.settings.set('replyPrev', this.settings.get('replyPrev', { ctrlKey: true, shiftKey: false, altKey: false, metaKey: false, code: 'ArrowDown' }))
+		this.cache = { channel: undefined, };
+		this.message = { index: -1, channel: undefined, };
+		this.fetch = { message: getMessages, channel: getChannel, };
+		this.reply = { create: createPendingReply, remove: deletePendingReply, };
+
+		// New update for the binds so this is a failsafe for the old one
+		if ( this.settings.get('version', 18) === 18 ) {
+			this.settings.set('replyNext', {ctrlKey: true, shiftKey: false, altKey: false, metaKey: false, key: 'ArrowUp'});
+			this.settings.set('replyPrev', {ctrlKey: true, shiftKey: false, altKey: false, metaKey: false, key: 'ArrowDown'});
+			this.settings.set('mention', true);
+			this.settings.set('updated', 19);
+		} else {
+			this.settings.set('replyNext', this.settings.get('replyNext', {ctrlKey: true, shiftKey: false, altKey: false, metaKey: false, key: 'ArrowUp'}));
+			this.settings.set('replyPrev', this.settings.get('replyPrev', {ctrlKey: true, shiftKey: false, altKey: false, metaKey: false, key: 'ArrowDown'}));
+			this.settings.set('mention', this.settings.get('mention', true));
+		}
 
 		// Listeners
-		window.addEventListener('keydown', this.keyPressHandler)
-		Dispatch.subscribe(selectChannel, this.overhaulCurrentChannel)
-		Dispatch.subscribe(createReply, this.overhaulCurrentReply)
-		Dispatch.subscribe(removeReply, this.overhaulCurrentReply)
+		window.addEventListener('keydown', this.keyPressHandler);
+		Dispatch.subscribe(selectChannel, this.overhaulCurrentChannel);
+		Dispatch.subscribe(createReply, this.overhaulCurrentReply);
+		Dispatch.subscribe(removeReply, this.overhaulCurrentReply);
 
 		// Settings 
 		powercord.api.settings.registerSettings(this.entityID, {
 			category: this.entityID,
 			label: 'Quick Chat Reply',
 			render: Settings,
-		})
+		});
 	}
 
 	pluginWillUnload() {
-		window.removeEventListener('keydown', this.keyPressHandler)
-		Dispatch.unsubscribe(selectChannel, this.overhaulCurrentChannel)
-		Dispatch.unsubscribe(createReply, this.overhaulCurrentReply)
-		Dispatch.unsubscribe(removeReply, this.overhaulCurrentReply)
-		Dispatch.unsubscribe(newMessage, this.messageUpdater) // More of a double check system
-		powercord.api.settings.unregisterSettings(this.entityID)
+		window.removeEventListener('keydown', this.keyPressHandler);
+		Dispatch.unsubscribe(selectChannel, this.overhaulCurrentChannel);
+		Dispatch.unsubscribe(createReply, this.overhaulCurrentReply);
+		Dispatch.unsubscribe(removeReply, this.overhaulCurrentReply);
+		Dispatch.unsubscribe(newMessage, this.messageUpdater); // More of a double check system
+		powercord.api.settings.unregisterSettings(this.entityID);
 	}
 }
 
-module.exports = quickChatReply
+module.exports = quickChatReply;
