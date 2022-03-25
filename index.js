@@ -34,8 +34,9 @@ class quickChatReply extends Plugin {
 	}
 
 	filter(matchfrom, matchto) {
-		return Object.keys(matchfrom).every((value,) => { return matchfrom[value] === matchto[value] });
-	}
+		return Object.keys(matchfrom).every((value,) => { 
+			return typeof matchfrom[value]==='string'?matchfrom[value].toUpperCase()===matchto[value].toUpperCase():matchfrom[value]===matchto[value] });
+	};
 
 	_keyPressHandler(keyInput) {
 		if ( !this.message.channel ) {
@@ -130,11 +131,11 @@ class quickChatReply extends Plugin {
 		this.reply = { create: createPendingReply, remove: deletePendingReply, };
 
 		// New update for the binds so this is a failsafe for the old one
-		if ( this.settings.get('version', 18) === 18 ) {
+		if ( this.settings.get('version', 0) === 22 ) {
 			this.settings.set('replyNext', {ctrlKey: true, shiftKey: false, altKey: false, metaKey: false, key: 'ArrowUp'});
 			this.settings.set('replyPrev', {ctrlKey: true, shiftKey: false, altKey: false, metaKey: false, key: 'ArrowDown'});
 			this.settings.set('mention', true);
-			this.settings.set('updated', 19);
+			this.settings.set('updated', 22);
 		} else {
 			this.settings.set('replyNext', this.settings.get('replyNext', {ctrlKey: true, shiftKey: false, altKey: false, metaKey: false, key: 'ArrowUp'}));
 			this.settings.set('replyPrev', this.settings.get('replyPrev', {ctrlKey: true, shiftKey: false, altKey: false, metaKey: false, key: 'ArrowDown'}));
