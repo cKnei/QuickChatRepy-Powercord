@@ -3,11 +3,12 @@ Quickly reply to chat message using personally selected key-binds!
 ( No video because my laptop a potato ) 
 
 Default key-binds are:
-  Reply to higher up message: <kbd>Ctrl</kbd>+<kbd>ArrowUp</kbd>
-  Reply to lower down message: <kbd>Ctrl</kbd>+<kbd>ArrowDown</kbd>
+Reply to higher up message: <kbd>Ctrl</kbd>+<kbd>ArrowUp</kbd>
+Reply to lower down message: <kbd>Ctrl</kbd>+<kbd>ArrowDown</kbd>
 
 ## Recent Update
 Click [Here](https://github.com/notKnei/quickChatReply/blob/master/TODO.md#update-110) To Read The Changes
+
 ## Suggestions & Issues
 Have a [Suggestion Or Issue](https://github.com/notKnei/quickChatReply/blob/master/TODO.md#suggestions--issue-reports)?
 
