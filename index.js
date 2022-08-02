@@ -8,13 +8,11 @@ const {
 	},
 	FluxDispatcher: Dispatch,
 	constants: {
-		ActionTypes: {
-			CREATE_PENDING_REPLY: createReply,
-			DELETE_PENDING_REPLY: removeReply,
-			CHANNEL_SELECT: selectChannel,
-			MESSAGE_CREATE: newMessage,
-			//LOAD_MESSAGES_SUCCESS: loadMessages,
-		},
+		CREATE_PENDING_REPLY: createReply,
+		DELETE_PENDING_REPLY: removeReply,
+		CHANNEL_SELECT: selectChannel,
+		MESSAGE_CREATE: newMessage,
+		//LOAD_MESSAGES_SUCCESS: loadMessages,
 	},
 } = require('powercord/webpack');
 
