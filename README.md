@@ -20,12 +20,12 @@ I am not sure if this is allowed in any way because I have 0 clue how to contact
 3. Restart Powercord and Enjoy!
 
 ## Thank you to
-- M|-|4r13y ツ#1051(Harley) <350227339784880130>
+- M|-|4r13y ツ#1051 <350227339784880130>
 - King Fish#7387 <499400512559382538>
-- Samm-Cheese#9500(Nickname changes way to much) <372148345894076416>
-- ѵοіd#0001(send me anime feet) <579731384868798464>
+- Samm-Cheese#9500 <372148345894076416>
+- ѵοіd#0001 <579731384868798464>
 - Qb#5942 <133659541198864384>
-- Ven#8810(i use Samm-Cheese btw) <343383572805058560>
+- Ven#8485 <343383572805058560>
 - All and any future contributers to the github :D
 
 for helping me with issues I had :D

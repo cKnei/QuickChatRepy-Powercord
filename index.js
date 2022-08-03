@@ -7,13 +7,6 @@ const {
 		getChannelId,
 	},
 	FluxDispatcher: Dispatch,
-	constants: {
-		CREATE_PENDING_REPLY: createReply,
-		DELETE_PENDING_REPLY: removeReply,
-		CHANNEL_SELECT: selectChannel,
-		MESSAGE_CREATE: newMessage,
-		//LOAD_MESSAGES_SUCCESS: loadMessages,
-	},
 } = require('powercord/webpack');
 
 const Settings = require('./components/settings');
@@ -96,11 +89,11 @@ class quickChatReply extends Plugin {
 	}
 
 	_overhaulCurrentReply(dat) {
-		if (dat.type === createReply) {
+		if (dat.type === 'CREATE_PENDING_REPLY') {
 			this.message.index = this.fetch.message(this.message.channel).toArray().reverse().findIndex((e,)=>{return e.id===dat.message.id});
 			this.newMessageListen(true);
 		}
-		else if (dat.type === removeReply) {
+		else if (dat.type === 'DELETE_PENDING_REPLY') {
 			this.newMessageListen(false);
 			this.message = { index: -1, channel: this.message.channel, };
 		}
@@ -108,8 +101,8 @@ class quickChatReply extends Plugin {
 
 	newMessageListen( b ) {
 		if ( listenerStatus === b ) return;
-		if ( b ) Dispatch.subscribe(newMessage, this.messageUpdater); 
-		else if ( !b ) Dispatch.unsubscribe(newMessage, this.messageUpdater);
+		if ( b ) Dispatch.subscribe('MESSAGE_CREATE', this.messageUpdater); 
+		else if ( !b ) Dispatch.unsubscribe('MESSAGE_CREATE', this.messageUpdater);
 		listenerStatus=!listenerStatus;
 	}
 
@@ -128,38 +121,29 @@ class quickChatReply extends Plugin {
 		this.fetch = { message: getMessages, channel: getChannel, };
 		this.reply = { create: createPendingReply, remove: deletePendingReply, };
 
-		// New update for the binds so this is a failsafe for the old one
-		if ( this.settings.get('version', 0) === 22 ) {
-			this.settings.set('replyNext', {ctrlKey: true, shiftKey: false, altKey: false, metaKey: false, key: 'ArrowUp'});
-			this.settings.set('replyPrev', {ctrlKey: true, shiftKey: false, altKey: false, metaKey: false, key: 'ArrowDown'});
-			this.settings.set('mention', true);
-			this.settings.set('updated', 22);
-		} else {
-			this.settings.set('replyNext', this.settings.get('replyNext', {ctrlKey: true, shiftKey: false, altKey: false, metaKey: false, key: 'ArrowUp'}));
-			this.settings.set('replyPrev', this.settings.get('replyPrev', {ctrlKey: true, shiftKey: false, altKey: false, metaKey: false, key: 'ArrowDown'}));
-			this.settings.set('mention', this.settings.get('mention', true));
-		}
-
-		// Listeners
-		window.addEventListener('keydown', this.keyPressHandler);
-		Dispatch.subscribe(selectChannel, this.overhaulCurrentChannel);
-		Dispatch.subscribe(createReply, this.overhaulCurrentReply);
-		Dispatch.subscribe(removeReply, this.overhaulCurrentReply);
-
-		// Settings 
+		/* Settings */
+		this.settings.set('replyNext', this.settings.get('replyNext', {ctrlKey: true, shiftKey: false, altKey: false, metaKey: false, key: 'ArrowUp'}));
+		this.settings.set('replyPrev', this.settings.get('replyPrev', {ctrlKey: true, shiftKey: false, altKey: false, metaKey: false, key: 'ArrowDown'}));
+		this.settings.set('mention', this.settings.get('mention', true));
 		powercord.api.settings.registerSettings(this.entityID, {
 			category: this.entityID,
 			label: 'Quick Chat Reply',
 			render: Settings,
 		});
+
+		/* Listeners */
+		window.addEventListener('keydown', this.keyPressHandler);
+		Dispatch.subscribe('CHANNEL_SELECT', this.overhaulCurrentChannel);
+		Dispatch.subscribe('CREATE_PENDING_REPLY', this.overhaulCurrentReply);
+		Dispatch.subscribe('DELETE_PENDING_REPLY', this.overhaulCurrentReply);
 	}
 
 	pluginWillUnload() {
 		window.removeEventListener('keydown', this.keyPressHandler);
-		Dispatch.unsubscribe(selectChannel, this.overhaulCurrentChannel);
-		Dispatch.unsubscribe(createReply, this.overhaulCurrentReply);
-		Dispatch.unsubscribe(removeReply, this.overhaulCurrentReply);
-		Dispatch.unsubscribe(newMessage, this.messageUpdater); // More of a double check system
+		Dispatch.unsubscribe('CHANNEL_SELECT', this.overhaulCurrentChannel);
+		Dispatch.unsubscribe('CREATE_PENDING_REPLY', this.overhaulCurrentReply);
+		Dispatch.unsubscribe('DELETE_PENDING_REPLY', this.overhaulCurrentReply);
+		Dispatch.unsubscribe('MESSAGE_CREATE', this.messageUpdater); // More of a double check system
 		powercord.api.settings.unregisterSettings(this.entityID);
 	}
 }
